@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Upload image</title>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+	
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	
+
+</head>
+<body>
+
+<?php 
+	include "class.image.php";
+	$image = new image();
+
+
+
+	// exit
+	if (isset($_POST['submit'])) {
+
+		// get the name, size, image temp form the file upload 
+		$image_name=$_FILES['image']['name'];
+		$image_size=$_FILES['image']['size'];
+		$image_temp=$_FILES['image']['tmp_name'];
+
+		// expload the image name to get the extension
+		$exploded_image_name=explode('.', $image_name);
+		$end_array_value=end($exploded_image_name); //  get the last vale in array
+		$image_ext=strtolower($end_array_value); 	// make the string value lowercase
+
+		// create a filename and add the extension to it
+		$filename = 'pic_'.rand(); 
+		$image_filename = $filename.'.'.$image_ext;
+
+		// upload the image by giving the upload method
+		// the image_temp, extension and filename
+		$image->upload_image($image_temp,$image_ext,$filename);
+
+		
+	}
+	
+
+
+ ?>
+
+
+
+<div class="container ">
+	<!-- Jumbotron -->
+      <div class="jumbotron" style="margin-top:10%">
+        <h1>Upload image</h1>
+
+        <form action="" method="post" enctype="multipart/form-data" class="form-inline" >
+        	<!-- Select image to upload:	 -->
+        	<div class="form-group">																																															
+			<input type="file" name="image" id="fileToUpload" class="btn btn-lg btn-success">
+			</div>
+			<input type="submit" value="Upload Image" name="submit" class="btn btn-lg btn-success">
+
+        </form>
+      </div>
+</div>
+
+</body>
+</html>
